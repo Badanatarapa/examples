@@ -199,7 +199,7 @@ h1 {
   display: none;
   position: absolute;
   width: 320px;
-  max-height: calc(630px - 2em);
+  max-height: calc(640px - 2em);
   right: 16px;
   top: 64px;
 
