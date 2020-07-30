@@ -5,7 +5,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2hhcmdldHJpcCIsImEiOiJjamo3em4wdnUwdHVlM3Z0Z
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/chargetrip/ck98fwwp159v71ip7xhs8bwts',
+  style: 'mapbox://styles/chargetrip/cjy4414ti3a3y1cqrvy01rg9x',
   zoom: 6.4,
   center: [8.2, 52],
   trafficSource: /mapbox-traffic-v\d/,
