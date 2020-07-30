@@ -71,4 +71,13 @@ export default [
     },
     plugins,
   },
+  {
+    input: 'traffic/index.js',
+    output: {
+      file: 'public/traffic/bundle.js',
+      format: 'iife',
+      sourcemap: true,
+    },
+    plugins,
+  },
 ];
