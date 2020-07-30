@@ -46,7 +46,7 @@ export const drawRoute = (id, coordinates, legs) => {
     });
 
     positionElevationIndicator(position);
-    splitPolyline([...coordinates], closestPoint, closestPointIndex);
+    addLineEnd(closestPoint);
   });
 };
 
@@ -140,64 +140,6 @@ const showLegs = legs => {
 };
 
 /**
- * Create a second polyline up untill the point that was clicked.
- *
- * @param coordinates {array} the coordinates that need to be split.
- * @param closestPoint {array} the point at which the coordinates need to be split.
- */
-const splitPolyline = (coordinates, closestPoint, closestPointIndex) => {
-  const clickedRoute = coordinates.splice(0, closestPointIndex);
-
-  drawClickedLine(clickedRoute);
-  addLineEnd(closestPoint);
-};
-
-/**
- * With this function we will mark the route up until the point that was clicked.
- *
- * @param coordinates {array} The coordinates until the point that was clicked.
- */
-const drawClickedLine = coordinates => {
-  if (map.getLayer('clicked-polyline')) map.removeLayer('clicked-polyline');
-  if (map.getSource('clicked-source')) map.removeSource('clicked-source');
-  const geojson = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          properties: {},
-          coordinates,
-        },
-      },
-    ],
-  };
-
-  map.addSource('clicked-source', {
-    type: 'geojson',
-    data: geojson,
-  });
-
-  map.addLayer(
-    {
-      id: 'clicked-polyline',
-      type: 'line',
-      source: 'clicked-source',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
-      },
-      paint: {
-        'line-color': '#EA8538',
-        'line-width': 7,
-      },
-    },
-    'route',
-  );
-};
-
-/**
  * Display the end of the clicked polyline.
  *
  * @param end {array} The coordinates of the end of the clicked line.
@@ -226,7 +168,7 @@ const addLineEnd = end => {
     source: 'point',
     layout: {
       'icon-image': 'elipse',
-      'icon-size': 1.2,
+      'icon-size': 1.4,
     },
   });
 };
