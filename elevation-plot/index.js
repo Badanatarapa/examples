@@ -30,6 +30,6 @@ const drawRoutePolyline = (id, data) => {
 
   // fetch information about start of the route
   fetchRoutePath(id, reversed[0]).then(data => {
-    displaySpecs(data);
+    displaySpecs(data, reversed[0]);
   });
 };

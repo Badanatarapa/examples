@@ -1,6 +1,21 @@
 import Chart from 'chart.js';
+import { getWeatherInfo } from './weather';
 
 Chart.defaults.global.defaultFontFamily = 'Inter';
+
+const getMaxSpeed = speed => {
+  const maxSpeed = [30, 50, 100, 110, 120, 130];
+  let max = 30;
+  let dif = Math.abs(max - speed);
+  if (speed > 130) return 'no max';
+  maxSpeed.map(item => {
+    if (Math.abs(speed - item) < dif) {
+      max = item;
+      dif = Math.abs(speed - item);
+    }
+  });
+  return max + ' km';
+};
 
 /**
  * Create an elevation graph using the points from the elevationPlot.
@@ -163,7 +178,7 @@ export const displayElevationData = (elevationUp, elevationDown) => {
  *
  * @param path {object} route path specification.
  */
-export const displaySpecs = path => {
+export const displaySpecs = (path, coordinates) => {
   // The consumption, in kWh, of this route path segment.
   document.getElementById('consumption').innerHTML =
     path.routePath?.consumptionPerKm >= 0 ? `${path.routePath?.consumptionPerKm * 1000} Wh/km` : 'Uknown';
@@ -177,4 +192,8 @@ export const displaySpecs = path => {
   document.getElementById('average-speed').innerHTML = path.routePath?.avSpeed
     ? `${path.routePath?.avSpeed} km`
     : 'Unknown';
+
+  document.getElementById('max-speed').innerHTML = getMaxSpeed(path.routePath?.avSpeed);
+
+  getWeatherInfo(coordinates[0], coordinates[1]);
 };

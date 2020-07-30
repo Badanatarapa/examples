@@ -179,6 +179,14 @@ a {
   background: url('images/average-speed.svg') no-repeat left center;
 }
 
+.info-max-speed {
+  background: url('images/speed-limit.svg') no-repeat left center;
+}
+
+.info-temperature {
+  background: url('images/temperature.svg') no-repeat left center;
+}
+
 .chart {
   position: relative;
   padding: 0 5px;

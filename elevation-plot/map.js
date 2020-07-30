@@ -42,7 +42,7 @@ export const drawRoute = (id, coordinates, legs) => {
     const position = closestPointIndex / coordinates.length;
 
     fetchRoutePath(id, closestPoint).then(data => {
-      displaySpecs(data);
+      displaySpecs(data, closestPoint);
     });
 
     positionElevationIndicator(position);

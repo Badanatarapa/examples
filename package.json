@@ -4,6 +4,8 @@
   "main": "route/index.js",
   "version": "1.0.0",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/runtime": "^7.10.5",
     "@mapbox/polyline": "^1.1.0",
     "@urql/core": "^1.7.0",
     "chart.js": "^2.9.3",
