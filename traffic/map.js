@@ -62,6 +62,7 @@ const drawPolyline = coordinates => {
 
   map.addSource('polyline-source', {
     type: 'geojson',
+    lineMetrics: true,
     data: geojson,
   });
 
@@ -75,8 +76,27 @@ const drawPolyline = coordinates => {
       'line-cap': 'round',
     },
     paint: {
-      'line-color': '#0078FF',
+      'line-color': 'red',
       'line-width': 6,
+      // 'line-gradient' must be specified using an expression
+      // with the special 'line-progress' property
+      'line-gradient': [
+        'interpolate',
+        ['linear'],
+        ['line-progress'],
+        0,
+        'blue',
+        0.1,
+        'royalblue',
+        0.3,
+        'cyan',
+        0.5,
+        'lime',
+        0.7,
+        'yellow',
+        1,
+        'red',
+      ],
     },
   });
 };
