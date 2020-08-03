@@ -1,10 +1,9 @@
 import { createClient, createRequest, defaultExchanges, subscriptionExchange } from '@urql/core';
 import { pipe, subscribe } from 'wonka';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import { createRoute, routeUpdate } from './queries.js';
+import { createRoute, routeUpdate, routes } from './queries.js';
 import { drawRoute } from './map.js';
 import * as mapboxPolyline from '@mapbox/polyline';
-import { getDurationString } from '../utils';
 import { createInstructions } from './directions';
 
 /**
@@ -49,7 +48,7 @@ const client = createClient({
  * 2. Subscribe to route updates in order to receive its details.
  */
 client
-  .mutation(createRoute)
+  .mutation(createRoute(new URLSearchParams(window.location.search).get('route')))
   .toPromise()
   .then(response => {
     const routeId = response.data.newRoute;
@@ -65,6 +64,8 @@ client
         if (status === 'done' && route) {
           unsubscribe();
 
+          console.log('CT route distance', route.distance);
+
           drawRoutePolyline(route); // draw a polyline on a map
           displayRouteData(route); // fill in the route information
           createInstructions(route); // create directions and add to the map
@@ -72,7 +73,7 @@ client
       }),
     );
   })
-  .catch(error => console.log(error));
+  .catch(error => console.log('Error creating route', error));
 
 /**
  * Draw a route on a map.
@@ -97,35 +98,9 @@ const drawRoutePolyline = data => {
  *
  * @param data {object} route specification
  */
-const displayRouteData = data => {
+const displayRouteData = () => {
   document.getElementById('loader').remove();
   document.querySelector('.tags').style.display = 'flex';
-
-  // the total duration of the journey (including charge time), in seconds
-  document.getElementById('duration').innerHTML = `${getDurationString(data.duration ?? 0)}`;
-
-  // the total distance of the route, in meters
-  document.getElementById('distance').innerHTML = data.distance ? `${(data.distance / 1000).toFixed(0)} km` : 'Unknown';
-
-  // the amount of stops in this route
-  document.getElementById('stop').innerHTML = `${data.charges ?? 0} stops`;
-
-  // the total time required to charge of the entire route, in seconds
-  document.getElementById('charge-duration').innerHTML = getDurationString(data.chargeTime ?? 0);
-
-  // the total energy used of the route, in kWh
-  document.getElementById('consumption-overview').innerHTML = data.consumption
-    ? `${data.consumption.toFixed(2)} kWh`
-    : 'Unknown';
-  document.getElementById('consumption').innerHTML = data.consumption
-    ? `${data.consumption.toFixed(2)} kWh`
-    : 'Unknown';
-
-  // the money saved by the user driving this route with the electric vehicle
-  document.getElementById('cost').innerHTML = `${data.saving?.currency || '€'} ${data.saving?.money ?? 0} `;
-
-  // the total amount of CO2 which were used with a petrol vehicle
-  document.getElementById('co2').innerHTML = data.saving?.co2 ? `${data.saving.co2 / 1000} Kg` : 'Unknown';
 };
 
 // Add event listeners for 'click' on the tabs.
@@ -145,3 +120,11 @@ document.querySelector('.turn-by-turn-button').addEventListener('click', () => {
   turnByTurnTab.style.display = 'block';
   carTab.style.display = 'none';
 });
+
+const carTab = document.querySelector('.car-tab');
+
+carTab.innerHTML = routes
+  .map((item, index) => {
+    return `<li><a href=?route=${index}>Route ${item.name}</a></li>`;
+  })
+  .join(' ');

@@ -23,13 +23,11 @@
 
     <div class="journey-specs">
       <header>
-        <span class="duration" id="duration"></span>
-        <h1>Amsterdam • Berlin</h1>
         <span id="loader">Loading...</span>
 
         <div class="tabs">
-          <button tabindex="0" class="car-details-button focused">Car details</button>  
-          <button tabindex="1" class="turn-by-turn-button">Turn by Turn</button>  
+          <button tabindex="0" class="car-details-button focused">Routes</button>  
+          <button tabindex="1" class="turn-by-turn-button">Directions</button>  
         <div>
       </header>
 
@@ -47,55 +45,8 @@
         <div class="divider"></div>
       </div>
 
-      <div class="car-tab" id="car-tab">
-      <section>
-        <h2>Car information</h2>
-        <div class="car-details">
-          <div>
-            Tesla
-            <br />
-            <span>Model S</span>
-          </div>
-          <img class="car-image" src="images/tesla.png" alt="Tesla model 3" />
-        </div>
-        <ul class="info">
-          <li>
-            Passengers
-            <span>1</span>
-          </li>
-          <li>
-            State of Charge
-            <span>72.5 kWh</span>
-          </li>
-          <li>
-            Adapters
-            <br />
-            <span>CHADEMO, Type 2</span>
-          </li>
-        </ul>
-      </section>
+      <div class="car-tab" id="car-tab"  style="padding: 24px">
 
-      <section>
-        <h2>Trip information</h2>
-        <ul class="info trip">
-          <li class="trip-duration">
-            Charge Duration
-            <span id="charge-duration">--•--</span>
-          </li>
-          <li class="trip-fuel">
-            Saved on Fuel
-            <span id="cost">--•--</span>
-          </li>
-          <li class="trip-consumption">
-            Total consumption
-            <span id="consumption">--•--</span>
-          </li>
-          <li class="trip-co2">
-            CO2 spared
-            <span id="co2">--•--</span>
-          </li>
-        </ul>
-      </section>
       <a
       class="chargetrip-logo"
       href="https://chargetrip.com/"

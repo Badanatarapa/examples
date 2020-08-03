@@ -1,3 +1,6 @@
+import * as mapboxPolyline from '@mapbox/polyline';
+import { drawRoute } from './map';
+
 export const createMapboxRequestParams = data => {
   let coordinates = '';
   let waypointNames = new Array(data.legs.length + 1);
@@ -40,10 +43,13 @@ export const createInstructions = async data => {
     );
     const result = await response.json();
 
-    // Create a string containing the HTML for the route instructions.
+    console.log('Mapbox Directions route distance', result.routes[0].distance);
+
     let routeInstructions = '';
+    let poly = '';
     result.routes[0].legs.forEach(({ steps }, i) => {
       const instructionsForStep = steps.reduce((acc, { maneuver, distance, geometry }, index) => {
+        poly = poly + geometry;
         const listItem = `
         <li class="instruction-step">
             <p class="instruction-text">
@@ -54,6 +60,12 @@ export const createInstructions = async data => {
       }, `<h2>Directions to ${data.legs[i]?.name || 'next stop'}</h2>`);
       routeInstructions = routeInstructions + instructionsForStep;
     });
+
+    // debug: plot mapbox route on map
+    const decodedData = mapboxPolyline.decode(result.routes[0].geometry);
+    const reversed = decodedData.map(item => item.reverse());
+    drawRoute(reversed, false);
+    // end debug
 
     // Add the routeInstructions to the instructions div.
     document.getElementById('instructions').innerHTML = `<ol>${routeInstructions}</ol>`;

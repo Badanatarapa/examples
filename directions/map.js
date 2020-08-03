@@ -47,12 +47,12 @@ map.on('mouseleave', 'legs', function() {
  */
 export const drawRoute = (coordinates, legs) => {
   if (map.loaded()) {
-    drawPolyline(coordinates);
-    showLegs(legs);
+    drawPolyline(coordinates, !!legs);
+    if (legs) showLegs(legs);
   } else {
     map.on('load', () => {
-      drawPolyline(coordinates);
-      showLegs(legs);
+      drawPolyline(coordinates, !!legs);
+      if (legs) showLegs(legs);
     });
   }
 };
@@ -62,7 +62,7 @@ export const drawRoute = (coordinates, legs) => {
  *
  * @param coordinates {array} polyline coordinates
  */
-const drawPolyline = coordinates => {
+const drawPolyline = (coordinates, isChargetripRoute) => {
   const geojson = {
     type: 'FeatureCollection',
     features: [
@@ -77,23 +77,23 @@ const drawPolyline = coordinates => {
     ],
   };
 
-  map.addSource('polyline-source', {
+  map.addSource(isChargetripRoute ? 'polyline-source' : 'polyMapbox-source', {
     type: 'geojson',
     data: geojson,
   });
 
   map.addLayer({
-    id: 'polyline',
+    id: isChargetripRoute ? 'polyline' : 'polyMapbox',
     type: 'line',
     options: 'beforeLayer',
-    source: 'polyline-source',
+    source: isChargetripRoute ? 'polyline-source' : 'polyMapbox-source',
     layout: {
       'line-join': 'round',
       'line-cap': 'round',
     },
     paint: {
-      'line-color': '#0078FF',
-      'line-width': 3,
+      'line-color': isChargetripRoute ? '#0078FF' : '#000',
+      'line-width': isChargetripRoute ? 3 : 1,
     },
   });
 };
