@@ -3,7 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
-import json from "@rollup/plugin-json";
+import json from '@rollup/plugin-json';
 
 // eslint-disable-next-line no-undef
 const production = !process.env.ROLLUP_WATCH;
@@ -85,6 +85,15 @@ export default [
     input: 'state-of-charge/index.js',
     output: {
       file: 'public/state-of-charge/bundle.js',
+      format: 'iife',
+      sourcemap: true,
+    },
+    plugins,
+  },
+  {
+    input: 'isochrone/index.js',
+    output: {
+      file: 'public/isochrone/bundle.js',
       format: 'iife',
       sourcemap: true,
     },
